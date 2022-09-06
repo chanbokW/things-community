@@ -41,9 +41,34 @@ export class PostsService {
     return PostsResponse.of(posts);
   }
 
-  async findAll() {
-    const postsList: Posts[] = await this.postsRepository.find();
-    return postsList;
+  /**
+   *
+   * @param page 페이지 번호
+   * @returns 페이지 리스트
+   */
+  async findAll(page: number) {
+    try {
+      const pagesize: number = 20;
+      const postsList: Posts[] = await this.postsRepository.find({
+        select: {
+          id: true,
+          title: true,
+          content: true,
+          createAt: true,
+          updateAt: true,
+        },
+        order: { createAt: 'desc' },
+        skip: (page - 1) * pagesize,
+        take: pagesize,
+      });
+      console.log(postsList);
+      return postsList;
+    } catch (error) {
+      throw new HttpException(
+        '게시글을 조회하지 못했습니다.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
   }
 
   /**

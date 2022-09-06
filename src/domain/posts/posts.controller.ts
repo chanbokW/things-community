@@ -4,8 +4,10 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { get } from 'http';
 import { CreatePostsDto } from './dto/create-posts.dto';
@@ -24,25 +26,28 @@ export class PostsController {
   }
 
   @Get(':id')
-  findPosts(@Param('id') id: number): Promise<PostsResponse> {
+  findPosts(@Param('id', ParseIntPipe) id: number): Promise<PostsResponse> {
     return this.postsService.findById(id);
   }
 
   @Get()
-  findAll() {
-    return this.postsService.findAll();
+  findAll(@Query('page', ParseIntPipe) page: number) {
+    return this.postsService.findAll(page);
   }
 
   @Put(':id')
   update(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updatePostsDto: UpdatePostsDto,
   ): Promise<PostsResponse> {
     return this.postsService.update(id, updatePostsDto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number, @Body() deletePostsDto: DeletePostsDto) {
+  delete(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() deletePostsDto: DeletePostsDto,
+  ) {
     return this.postsService.remove(id, deletePostsDto);
   }
 }
