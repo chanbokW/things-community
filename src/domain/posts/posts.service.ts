@@ -6,6 +6,7 @@ import { Posts } from './entity/posts.entity';
 import * as bcrypt from 'bcrypt';
 import { PostsResponse } from './dto/posts-response.dto';
 import { UpdatePostsDto } from './dto/update-posts.dto';
+import { DeletePostsDto } from './dto/delete-posts.dto';
 
 @Injectable()
 export class PostsService {
@@ -69,7 +70,7 @@ export class PostsService {
     }
 
     findPosts.update(title, content);
-    const posts = await this.postsRepository.save(findPosts);
-    return PostsResponse.of(posts);
+    await this.postsRepository.update(id, findPosts);
+    return PostsResponse.of(findPosts);
   }
 }
