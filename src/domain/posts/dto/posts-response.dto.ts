@@ -24,7 +24,7 @@ export class PostsResponse {
   static of(posts: Posts): PostsResponse {
     return new PostsResponse(
       posts.id,
-      posts.content,
+      posts.title,
       posts.content,
       posts.createAt,
       posts.updateAt,

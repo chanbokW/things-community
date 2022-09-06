@@ -27,6 +27,10 @@ export class Posts extends BaseTimeEntity {
     this.deleteAt !== null;
   }
 
+  public update(title: string, content: string) {
+    this.title = title;
+    this.content = content;
+  }
   public delete() {
     this.recordDeleteTime();
   }

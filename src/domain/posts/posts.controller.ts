@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { get } from 'http';
 import { CreatePostsDto } from './dto/create-posts.dto';
 import { PostsResponse } from './dto/posts-response.dto';
+import { UpdatePostsDto } from './dto/update-posts.dto';
 import { PostsService } from './posts.service';
 
 @Controller('api/v1/posts')
@@ -21,5 +22,13 @@ export class PostsController {
   @Get()
   findAll() {
     return this.postsService.findAll();
+  }
+
+  @Put(':id')
+  update(
+    @Param() id: number,
+    @Body() updatePostsDto: UpdatePostsDto,
+  ): Promise<PostsResponse> {
+    return this.postsService.update(id, updatePostsDto);
   }
 }
