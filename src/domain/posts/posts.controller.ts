@@ -20,6 +20,7 @@ import {
 import { get } from 'http';
 import { CreatePostsDto } from './dto/create-posts.dto';
 import { DeletePostsDto } from './dto/delete-posts.dto';
+import { PageRequest } from './dto/page-request.dto';
 import { PostsResponse } from './dto/posts-response.dto';
 import { UpdatePostsDto } from './dto/update-posts.dto';
 import { PostsService } from './posts.service';
@@ -66,8 +67,8 @@ export class PostsController {
   })
   @ApiNotFoundResponse({ description: '게시글을 조회하지 못했습니다.' })
   @Get()
-  findAll(@Query('page', ParseIntPipe) page: number): Promise<PostsResponse[]> {
-    return this.postsService.findAll(page);
+  findAll(@Query() pageRequest: PageRequest): Promise<PostsResponse[]> {
+    return this.postsService.findAll(pageRequest.pageNo);
   }
 
   @ApiOperation({
