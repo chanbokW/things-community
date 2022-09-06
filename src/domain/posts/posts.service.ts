@@ -27,4 +27,19 @@ export class PostsService {
 
     return saveposts.id;
   }
+
+  /**
+   *
+   * @param id 게시글 아이디
+   * @returns 게시글 상세정보
+   */
+  async findById(id: number): Promise<PostsResponse> {
+    const posts: Posts = await this.postsRepository.findOneBy({ id });
+    return PostsResponse.of(posts);
+  }
+
+  async findAll() {
+    const postsList: Posts[] = await this.postsRepository.find();
+    return postsList;
+  }
 }
