@@ -1,15 +1,31 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, Length, Matches } from 'class-validator';
 import { Posts } from '../entity/posts.entity';
 
 export class CreatePostsDto {
+  @ApiProperty({
+    example: '한글입니다.',
+    description: '게시물 제목',
+    required: true,
+  })
   @IsNotEmpty()
   @Length(1, 50)
   private title: string;
 
+  @ApiProperty({
+    example: '가나다라마바사',
+    description: '게시물 본문',
+    required: true,
+  })
   @IsNotEmpty()
   @Length(1, 200)
   private content: string;
 
+  @ApiProperty({
+    example: 'test2018',
+    description: '게시물의 비밀번호',
+    required: true,
+  })
   @IsString()
   @IsNotEmpty()
   @Matches(/^(?=.*?[0-9]).{6,}$/, {

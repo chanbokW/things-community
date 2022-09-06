@@ -1,6 +1,12 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, Matches } from 'class-validator';
 
 export class DeletePostsDto {
+  @ApiProperty({
+    example: 'test2018',
+    description: '게시물의 삭제시 필요한 비밀번호',
+    required: true,
+  })
   @IsString()
   @IsNotEmpty()
   @Matches(/^(?=.*?[0-9]).{6,}$/, {

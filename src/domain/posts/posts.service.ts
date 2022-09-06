@@ -37,7 +37,12 @@ export class PostsService {
    */
   async findById(id: number): Promise<PostsResponse> {
     const posts: Posts = await this.postsRepository.findOneBy({ id });
-    console.log(posts);
+    if (!posts) {
+      throw new HttpException(
+        '존재하지 않은 게시물입니다.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
     return PostsResponse.of(posts);
   }
 
@@ -46,7 +51,7 @@ export class PostsService {
    * @param page 페이지 번호
    * @returns 페이지 리스트
    */
-  async findAll(page: number) {
+  async findAll(page: number): Promise<PostsResponse[]> {
     try {
       const pagesize: number = 20;
       const postsList: Posts[] = await this.postsRepository.find({
@@ -61,8 +66,7 @@ export class PostsService {
         skip: (page - 1) * pagesize,
         take: pagesize,
       });
-      console.log(postsList);
-      return postsList;
+      return postsList.map((m) => PostsResponse.of(m));
     } catch (error) {
       throw new HttpException(
         '게시글을 조회하지 못했습니다.',
@@ -90,7 +94,7 @@ export class PostsService {
 
     if (!(await bcrypt.compare(password, findPosts.password))) {
       throw new HttpException(
-        '비밀번호 보가 일치하지 않습니다.',
+        '비밀번호가 일치하지 않습니다.',
         HttpStatus.FORBIDDEN,
       );
     }
@@ -111,7 +115,7 @@ export class PostsService {
 
     if (!(await bcrypt.compare(deletePostsDto.password, findPosts.password))) {
       throw new HttpException(
-        '비밀번호 보가 일치하지 않습니다.',
+        '비밀번호가 일치하지 않습니다.',
         HttpStatus.FORBIDDEN,
       );
     }
