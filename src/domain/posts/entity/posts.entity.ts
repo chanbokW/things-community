@@ -15,11 +15,13 @@ export class Posts extends BaseTimeEntity {
   @Column()
   password: string;
 
-  @Column({
-    nullable: false,
-    comment: '게시물 입력시 날씨 정보가 들어갑니다.',
-  })
-  weather?: string;
+  static create(title: string, content: string, password: string): Posts {
+    const posts = new Posts();
+    posts.title = title;
+    posts.content = content;
+    posts.password = password;
+    return posts;
+  }
 
   public isDeleted() {
     this.deleteAt !== null;
