@@ -7,7 +7,7 @@ import { HttpExceptionFilter } from './global/common/exceptions/http-exception.f
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // HttpException Filter
-  app.useGlobalFilters(new HttpExceptionFilter());
+  // app.useGlobalFilters(new HttpExceptionFilter());
 
   //swagger
   const option = new DocumentBuilder()

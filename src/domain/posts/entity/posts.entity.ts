@@ -23,8 +23,8 @@ export class Posts extends BaseTimeEntity {
     return posts;
   }
 
-  public isDeleted() {
-    this.deleteAt !== null;
+  public isDeleted(): boolean {
+    return this.deleteAt !== null;
   }
 
   public update(title: string, content: string) {

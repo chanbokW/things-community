@@ -37,6 +37,7 @@ export class PostsService {
    */
   async findById(id: number): Promise<PostsResponse> {
     const posts: Posts = await this.postsRepository.findOneBy({ id });
+    console.log(posts);
     return PostsResponse.of(posts);
   }
 
@@ -72,5 +73,25 @@ export class PostsService {
     findPosts.update(title, content);
     await this.postsRepository.update(id, findPosts);
     return PostsResponse.of(findPosts);
+  }
+
+  async remove(id: number, deletePostsDto: DeletePostsDto) {
+    const findPosts: Posts = await this.postsRepository.findOneBy({ id });
+    if (!findPosts || findPosts.isDeleted()) {
+      throw new HttpException(
+        '존재하지 않은 게시물입니다.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    if (!(await bcrypt.compare(deletePostsDto.password, findPosts.password))) {
+      throw new HttpException(
+        '비밀번호 보가 일치하지 않습니다.',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    findPosts.delete();
+    this.postsRepository.update(id, findPosts);
   }
 }
