@@ -9,7 +9,7 @@ export class CreatePostsDto {
     required: true,
   })
   @IsNotEmpty()
-  @Length(1, 50)
+  @Length(1, 20)
   private title: string;
 
   @ApiProperty({
@@ -41,8 +41,8 @@ export class CreatePostsDto {
   }
 
   // 비번 암호화후 변환
-  toEntity(password: string): Posts {
-    return Posts.create(this.title, this.content, password);
+  toEntity(password: string, weather: string): Posts {
+    return Posts.create(this.title, this.content, password, weather);
   }
 
   get Password(): string {

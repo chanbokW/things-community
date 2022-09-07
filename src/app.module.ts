@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmAsyncModuleOptions } from './global/config/typeorm.config';
 import { PostsModule } from './domain/posts/posts.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { PostsModule } from './domain/posts/posts.module';
       isGlobal: true,
     }),
     PostsModule,
+    HttpModule,
   ],
   controllers: [],
   providers: [],

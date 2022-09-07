@@ -8,7 +8,7 @@ export class UpdatePostsDto {
     required: true,
   })
   @IsNotEmpty()
-  @Length(1, 50)
+  @Length(1, 20)
   title: string;
 
   @ApiProperty({
