@@ -21,7 +21,7 @@ export class UpdatePostsDto {
   content: string;
 
   @ApiProperty({
-    example: 'test2018.',
+    example: 'test2018',
     description: '게시물 비밀번호',
     required: true,
   })

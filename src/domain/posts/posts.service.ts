@@ -65,6 +65,7 @@ export class PostsService {
           id: true,
           title: true,
           content: true,
+          weather: true,
           createAt: true,
           updateAt: true,
         },
@@ -136,7 +137,9 @@ export class PostsService {
       console.log(url);
       const response = await firstValueFrom(
         this.httpService.get(`
-        ${url}/current.json?key=${this.configService.get('API_KEY')}&q=Korea`),
+        ${url}/current.json?key=${this.configService.get(
+          'API_KEY',
+        )}&q=Korea&lang=ko`),
       );
       return response.data.current.condition;
     } catch (e) {

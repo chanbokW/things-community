@@ -21,6 +21,12 @@ export class PostsResponse {
   content: string;
 
   @ApiProperty({
+    example: '  대체로 맑음',
+    description: '날씨 정보입니다.',
+  })
+  weather: string;
+
+  @ApiProperty({
     description: '게시물의 작성날짜',
   })
   createAt: Date;
@@ -33,12 +39,14 @@ export class PostsResponse {
     id: number,
     title: string,
     content: string,
+    weather: string,
     createAt: Date,
     updateAt: Date,
   ) {
     this.id = id;
     this.title = title;
     this.content = content;
+    this.weather = weather;
     this.createAt = createAt;
     this.updateAt = updateAt;
   }
@@ -48,6 +56,7 @@ export class PostsResponse {
       posts.id,
       posts.title,
       posts.content,
+      posts.weather,
       posts.createAt,
       posts.updateAt,
     );
