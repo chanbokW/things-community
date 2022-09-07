@@ -15,5 +15,6 @@ export const typeOrmAsyncModuleOptions = {
     autoLoadEntities: true,
     logging: true,
     charset: 'utf8mb4',
+    timezone: 'Asia/Seoul',
   }),
 };
