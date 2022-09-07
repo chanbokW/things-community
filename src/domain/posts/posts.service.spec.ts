@@ -2,17 +2,22 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PostsService } from './posts.service';
 
 describe('PostsService', () => {
-  let service: PostsService;
+  let postsService: PostsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [],
       providers: [PostsService],
     }).compile();
 
-    service = module.get<PostsService>(PostsService);
+    postsService = module.get<PostsService>(PostsService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+  // afterEach(async () => {
+  //   postsRepository.delete({});
+  // });
+
+  // afterAll(async () => {
+  //   postsRepository.delete({});
+  // });
 });

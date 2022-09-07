@@ -18,4 +18,8 @@ export abstract class BaseTimeEntity {
     nullable: true,
   })
   deleteAt?: Date | null;
+
+  public recordDeleteTime() {
+    this.deleteAt = new Date();
+  }
 }

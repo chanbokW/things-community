@@ -1,4 +1,5 @@
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
@@ -6,9 +7,10 @@ import { HttpExceptionFilter } from './global/common/exceptions/http-exception.f
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
   // HttpException Filter
   app.useGlobalFilters(new HttpExceptionFilter());
-
+  const port = configService.get('SERVER_PORT');
   //swagger
   const option = new DocumentBuilder()
     .setTitle('띵스 플로우')
@@ -24,6 +26,6 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  await app.listen(3000);
+  await app.listen(port);
 }
 bootstrap();
