@@ -7,11 +7,16 @@ import * as bcrypt from 'bcrypt';
 import { PostsResponse } from './dto/posts-response.dto';
 import { UpdatePostsDto } from './dto/update-posts.dto';
 import { DeletePostsDto } from './dto/delete-posts.dto';
+import { HttpService } from '@nestjs/axios';
+import { ConfigService } from '@nestjs/config';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectRepository(Posts) private postsRepository: Repository<Posts>,
+    private readonly httpService: HttpService,
+    private readonly configService: ConfigService,
   ) {}
   /**
    *
@@ -22,9 +27,10 @@ export class PostsService {
     const password = createPostsDto.Password;
     // 비밀번호 암호화
     const hashpassword = await bcrypt.hash(password, 10);
+    const weather = await this.getWeather();
 
     const saveposts = await this.postsRepository.save(
-      createPostsDto.toEntity(hashpassword),
+      createPostsDto.toEntity(hashpassword, weather.text),
     );
 
     return saveposts.id;
@@ -122,5 +128,23 @@ export class PostsService {
 
     findPosts.delete();
     this.postsRepository.update(id, findPosts);
+  }
+
+  async getWeather() {
+    try {
+      const url = this.configService.get<string>('URL');
+      console.log(url);
+      const response = await firstValueFrom(
+        this.httpService.get(`
+        ${url}/current.json?key=${this.configService.get('API_KEY')}&q=Korea`),
+      );
+      return response.data.current.condition;
+    } catch (e) {
+      console.error(e.message);
+      throw new HttpException(
+        '날씨 정보를 찾지못하였습니다.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
   }
 }
